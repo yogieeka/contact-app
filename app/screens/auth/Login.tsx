@@ -12,7 +12,6 @@ import {useDispatch} from 'react-redux';
 import {updateUser} from '../../store/userSlice';
 
 import {login} from '../../services';
-import {setSecureValue} from '../../utils/keyChain';
 import {transformToFormikErrors} from '../../utils/form';
 
 interface ValuesType {
@@ -39,10 +38,8 @@ const Login = () => {
     login(new URLSearchParams(reqObj))
       .then(res => {
         if (res.data?.user?.access_token) {
-          const {name, username, access_token, refresh_token} = res.data.user;
+          const {name, username, access_token} = res.data.user;
           dispatch(updateUser({name, username, token: access_token}));
-          setSecureValue('token', access_token);
-          setSecureValue('refresh_token', refresh_token);
         }
       })
       .catch(e => {
